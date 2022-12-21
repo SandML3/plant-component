@@ -6,12 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Component</title>
-
+    <style>
+        body {
+            background-color: rgb(51, 51, 55);
+            background: linear-gradient(180deg, rgb(226, 233, 227) 0%, rgb(69, 71, 70) 70%, rgb(27, 29, 28) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
-    <my-element name="monstera deliciosa" description="Lorem ipsum" logo="../images/logo.png"
-        image="../images/image.jpg"></my-element>
+    <my-element name="monstera deliciosa"
+        description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime dolore impedit minus nemo autem incidunt expedita placeat inventore iusto. Sit ut sequi voluptatibus provident omnis excepturi sed veritatis optio enim."
+        icon="../images/icon-toxic.png" image="../images/image.png"></my-element>
 
     <script type='module' src="./my-component.js"></script>
 </body>
