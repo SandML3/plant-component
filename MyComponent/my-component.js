@@ -8,17 +8,26 @@ class myElement extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     this.iconInfo = {
-      isToxic: this.hasAttribute("toxic"),
-      isEasy: this.hasAttribute("easy"),
-      needLigth: this.hasAttribute("light"),
+      isToxic: {
+        logo: this.hasAttribute("toxic") ? "../images/icon-toxic.png" : "",
+        text: this.hasAttribute("toxic") ? "toxic" : "no-toxic",
+      },
+      isEasy: {
+        logo: this.hasAttribute("easy") ? "" : "",
+        text: this.hasAttribute("easy") ? "easy" : "difficult",
+      },
+      needLigth: {
+        logo: this.hasAttribute("light") ? "" : "",
+        text: this.hasAttribute("light") ? "brigth" : "shadow",
+      },
     };
 
-    console.log("Hi desde el componente", this.iconInfo.isToxic);
+    console.log("Hi desde el componente");
   }
 
   //Observador de cambios en los atributos.
   static get observedAttributes() {
-    return ["name", "description", "icon", "image", "logo", "section"];
+    return ["name", "description", "image", "logo", "section"];
   }
 
   attributeChangedCallback(attr, oldVal, newVal) {
@@ -28,10 +37,6 @@ class myElement extends HTMLElement {
 
     if (attr === "description") {
       this.description = newVal;
-    }
-
-    if (attr === "icon") {
-      this.icon = { icon: newVal, text: "toxic" };
     }
 
     if (attr === "image") {
@@ -51,12 +56,13 @@ class myElement extends HTMLElement {
     //Creo el contenido dentro de una etiqueta <template></template> que posteriormente activaré clonando con js.
     const template = document.createElement("template");
 
-    // const icon = (
-    //   <div class="is-toxic-icon">
-    //     <img src="${this.icon.icon}" />
-    //     <p class="icon-text">${this.icon.text}</p>
-    //   </div>
-    // );
+    const icon = Object.keys(this.iconInfo).map(
+      (icon) =>
+        `<li class="icon">
+        <img class="logo" src="${this.iconInfo[icon].logo}" />
+        <p class="icon-text">${this.iconInfo[icon].text}</p>
+      </li>`
+    );
 
     template.innerHTML = `
         <section class="component">
@@ -88,8 +94,7 @@ class myElement extends HTMLElement {
                   <button class="button" > Add </button>
 
                   <div class="icon-wrapper">
-                    
-                  
+                    ${icon.join("")}
                   </div>
                  
               </div>
@@ -125,6 +130,7 @@ class myElement extends HTMLElement {
 
             :host .navigation-menu {
               display: flex;
+              margin-top: 1rem;
               padding: 1rem;
             }
 
@@ -165,7 +171,7 @@ class myElement extends HTMLElement {
                 padding-bottom: 2rem;
             }
 
-            :host h1 {
+            :host .title {
                 text-transform: uppercase;
                 font-size: 35px;
                 margin: 1rem;
@@ -178,7 +184,7 @@ class myElement extends HTMLElement {
              }
 
              :host .button {
-              margin: 0.5rem;
+              margin: 1rem;
               width:100px;
               background-color: rgb(71, 114, 35);
               border-color: transparent;
@@ -192,19 +198,26 @@ class myElement extends HTMLElement {
               margin-bottom: 2rem;
              }
 
-            :host img {
-              width: 1.5rem;
-            }
+             :host .icon-wrapper {
+              display: flex;
+              margin-bottom: 2rem;
+              margin-left: 1rem
+             }
 
-            :host .is-toxic-icon {
-              background-color: rgba(37, 60, 18, 0.8);
+            :host .icon {
+              background-color: rgb(95, 108, 89);
               display: flex;
               flex-direction: column;
               align-items: center;
               width: 2rem;
-              border-radius: 20%;
+              border-radius: 15px;
               padding: 0.3rem 1rem;
-              margin: 1rem;
+              margin: 0.2rem;
+              margin-top: 0rem;
+            }
+
+            :host .logo {
+              width: 25px;
             }
 
             :host .icon-text {
