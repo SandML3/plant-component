@@ -1,9 +1,11 @@
 . {
     min-height: max-content;
-    background-color: ;
+    background-color: rgba(255, 255, 255, 0.614);
     word-spacing: 1rem;
     font-weight: 300;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-decoration: underline;
     font-weight: 600;
+    filter: invert(100%);
+
 }

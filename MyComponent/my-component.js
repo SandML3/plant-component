@@ -9,16 +9,22 @@ class myElement extends HTMLElement {
 
     this.iconInfo = {
       isToxic: {
-        logo: this.hasAttribute("toxic") ? "../images/icon-toxic.png" : "",
-        text: this.hasAttribute("toxic") ? "toxic" : "no-toxic",
+        logo: this.hasAttribute("toxic")
+          ? "../images/icons/toxic.png"
+          : "../images/icons/safe.png",
+        text: this.hasAttribute("toxic") ? "toxic" : "safe",
       },
       isEasy: {
-        logo: this.hasAttribute("easy") ? "" : "",
+        logo: this.hasAttribute("easy")
+          ? "../images/icons/easy.png"
+          : "../images/icons/difficult.png",
         text: this.hasAttribute("easy") ? "easy" : "difficult",
       },
       needLigth: {
-        logo: this.hasAttribute("light") ? "" : "",
-        text: this.hasAttribute("light") ? "brigth" : "shadow",
+        logo: this.hasAttribute("light")
+          ? "../images/icons/bright.png"
+          : "../images/icons/shadow.png",
+        text: this.hasAttribute("light") ? "outdoor" : "indoor",
       },
     };
 
@@ -56,6 +62,7 @@ class myElement extends HTMLElement {
     //Creo el contenido dentro de una etiqueta <template></template> que posteriormente activaré clonando con js.
     const template = document.createElement("template");
 
+    console.log(this.iconInfo);
     const icon = Object.keys(this.iconInfo).map(
       (icon) =>
         `<li class="icon">
@@ -93,9 +100,9 @@ class myElement extends HTMLElement {
                   <p class="description" >${this.description}</p>
                   <button class="button" > Add </button>
 
-                  <div class="icon-wrapper">
+                  <ul class="icon-wrapper">
                     ${icon.join("")}
-                  </div>
+                  </ul>
                  
               </div>
               <div class="image"></div>
@@ -115,6 +122,7 @@ class myElement extends HTMLElement {
             :host {
                 width: 60%;
                 min-width: 800px;
+                max-width: 1000px;
                 display: inline-block;
                 background-color: lightgrey;
                 filter: drop-shadow(1rem 1rem 0.5rem rgba(0,0,0, 0.5));
@@ -180,7 +188,7 @@ class myElement extends HTMLElement {
             
             :host .description {
               margin: 0.5rem;
-              width: 40%;
+              width: 50%;
              }
 
              :host .button {
@@ -195,36 +203,41 @@ class myElement extends HTMLElement {
               filter: drop-shadow(0.3rem 0.3rem 0.3rem rgba(0,0,0, 0.4));
               font-family: Verdana, Geneva, Tahoma, sans-serif;
               background: linear-gradient(160deg, rgb(71, 114, 35) 0%, rgb(37, 60, 18) 70%, rgb(37, 60, 18) 100%);
-              margin-bottom: 2rem;
+              margin-bottom: 1rem;
              }
 
              :host .icon-wrapper {
               display: flex;
               margin-bottom: 2rem;
-              margin-left: 1rem
+              padding-left: 0.5rem;
              }
 
             :host .icon {
-              background-color: rgb(95, 108, 89);
+              list-style: none;
               display: flex;
-              flex-direction: column;
               align-items: center;
-              width: 2rem;
+              margin: 0.5rem;
+              gap: 0.5rem;
+              border: 1px solid rgba(255, 255, 255, 0.6);
+              background-color: rgba(255, 255, 255, 0.6);
+              background: linear-gradient(160deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.3) 100%);
               border-radius: 15px;
-              padding: 0.3rem 1rem;
-              margin: 0.2rem;
-              margin-top: 0rem;
+              padding: 0rem 0.6rem;
             }
 
             :host .logo {
-              width: 25px;
+              order: 2;
+              width: 20px;
+              filter: invert(50%);
+              margin: 0.3rem;
             }
 
             :host .icon-text {
-              color: white;
+              color: rgb(95, 108, 89);
               font-weight: 700; 
               margin: 0; 
-              font-size: 0.6rem;          
+              font-size: 0.6rem; 
+              text-transform: capitalize;   
           }
 
             :host .image {
