@@ -13,6 +13,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
         }
     </style>
@@ -21,7 +22,13 @@
 <body>
     <my-element name="monstera deliciosa"
         description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime dolore impedit minus nemo autem incidunt expedita placeat inventore iusto. Sit ut sequi voluptatibus provident omnis excepturi sed veritatis optio enim."
-        icon="../images/icon-toxic.png" image="../images/image.png"></my-element>
+        icon="../images/icon-toxic.png" image="../images/image.png" logo="../images/logo-white.svg" section="plant"
+        toxic></my-element>
+
+    <my-element name="monstera deliciosa"
+        description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime dolore impedit minus nemo autem incidunt expedita placeat inventore iusto. Sit ut sequi voluptatibus provident omnis excepturi sed veritatis optio enim."
+        icon="../images/icon-toxic.png" image="../images/image.png" logo="../images/logo-white.svg"
+        section="care"></my-element>
 
     <script type='module' src="./my-component.js"></script>
 </body>

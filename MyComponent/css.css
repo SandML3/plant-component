@@ -1,4 +1,9 @@
 . {
-    background-color : rgb(208, 206, 206);
-    text-transform: ;
+    min-height: max-content;
+    background-color: rgb(244, 225, 160);
+    word-spacing: 1rem;
+    font-weight: 300;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-decoration: underline;
+    font-weight: 600;
 }
