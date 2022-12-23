@@ -1,5 +1,3 @@
-console.log("Script funcionando");
-
 class myElement extends HTMLElement {
   //PRIMER CICLO DE VIDA DEL COMPONENTE. Lo creo en Memoria.
   constructor() {
@@ -33,7 +31,15 @@ class myElement extends HTMLElement {
 
   //Observador de cambios en los atributos.
   static get observedAttributes() {
-    return ["name", "description", "image", "logo", "section"];
+    return [
+      "name",
+      "description",
+      "image",
+      "logo",
+      "section",
+      "light",
+      "water",
+    ];
   }
 
   attributeChangedCallback(attr, oldVal, newVal) {
@@ -56,60 +62,84 @@ class myElement extends HTMLElement {
     if (attr === "section") {
       this.section = newVal;
     }
+
+    if (attr === "light") {
+      this.light = newVal;
+    }
+
+    if (attr === "water") {
+      this.water = newVal;
+    }
   }
 
   getTemplate() {
     //Creo el contenido dentro de una etiqueta <template></template> que posteriormente activaré clonando con js.
     const template = document.createElement("template");
 
-    console.log(this.iconInfo);
-    const icon = Object.keys(this.iconInfo).map(
-      (icon) =>
-        `<li class="icon">
-        <img class="logo" src="${this.iconInfo[icon].logo}" />
-        <p class="icon-text">${this.iconInfo[icon].text}</p>
-      </li>`
-    );
+    const getSectionTemplate = () => {
+      if (this.section === "plant") {
+        const icon = Object.keys(this.iconInfo).map(
+          (icon) =>
+            `<li class="icon">
+                  <img class="logo" src="${this.iconInfo[icon].logo}" />
+                  <p class="icon-text">${this.iconInfo[icon].text}</p>
+              </li>`
+        );
 
-    template.innerHTML = `
-        <section class="component">
-            <nav class="navigation-menu">
-              <div class="navigation-menu-logo"></div>
-              <ul class="navigation-menu-list">
-                <li class="navigation-menu-listItem ${
-                  this.section === "plant" ? "active" : ""
-                }">Plant</li>
-                <li class="navigation-menu-listItem ${
-                  this.section === "care" ? "active" : ""
-                }">Care</li>
-                <li class="navigation-menu-listItem ${
-                  this.section === "reproduction" ? "active" : ""
-                }">Reproduction</li>
-                <li class="navigation-menu-listItem ${
-                  this.section === "diseases" ? "active" : ""
-                }">Diseases</li>
-                <li class="navigation-menu-listItem ${
-                  this.section === "curiosities" ? "active" : ""
-                }">Curiosities</li>
-              </ul>  
-            </nav>
+        return `<div class="mainContent">
+         <div class="text-wrapper">
+             <h1 class="title">${this.name}</h1>
+             <p class="description" >${this.description}</p>
+             <button class="button" > Add </button>
+ 
+             <ul class="icon-wrapper">
+                 ${icon.join("")}
+             </ul>
+             
+         </div>
+         <div class="image"></div>
+       </div>`;
+      }
 
-            <div class="mainContent">
-              <div class="text-wrapper">
-                  <h1 class="title">${this.name}</h1>
-                  <p class="description" >${this.description}</p>
-                  <button class="button" > Add </button>
+      if (this.section === "care") {
+        return `<div class="careContent">
+         <div class="text-wrapper">
+             <h1 class="title">Luz</h1>
+             <p class="description" >${this.light}</p>
+         </div>
+         <div class="text-wrapper">
+             <h1 class="title">Riego</h1>
+             <p class="description" >${this.water}</p>
+         </div>
+         <div class="image"></div>
+       </div>`;
+      }
+    };
 
-                  <ul class="icon-wrapper">
-                    ${icon.join("")}
-                  </ul>
-                 
-              </div>
-              <div class="image"></div>
-            </div>
-            
-        </section>
-        ${this.getStyles()}
+    template.innerHTML = `<section class="component">
+    <nav class="navigation-menu">
+      <div class="navigation-menu-logo"></div>
+        <ul class="navigation-menu-list">
+            <li class="navigation-menu-listItem ${
+              this.section === "plant" ? "active" : ""
+            }">Plant</li>
+            <li class="navigation-menu-listItem ${
+              this.section === "care" ? "active" : ""
+            }">Care</li>
+            <li class="navigation-menu-listItem ${
+              this.section === "reproduction" ? "active" : ""
+            }">Reproduction</li>
+            <li class="navigation-menu-listItem ${
+              this.section === "diseases" ? "active" : ""
+            }">Diseases</li>
+            <li class="navigation-menu-listItem ${
+              this.section === "curiosities" ? "active" : ""
+            }">Curiosities</li>
+      </ul>  
+    </nav>
+  </section>
+      ${getSectionTemplate()}
+      ${this.getStyles()}
     `;
 
     return template;
@@ -117,6 +147,169 @@ class myElement extends HTMLElement {
 
   getStyles() {
     //Creo los estilos del componente.
+
+    const getSectionStyles = () => {
+      if (this.section === "plant") {
+        return ` :host .mainContent {
+          display: flex;
+          justify-content: space-between;
+          position: relative;
+          min-height: max-content;
+        }
+
+        :host .text-wrapper {
+            width: 100%;
+            height: 100%;
+            margin: 0.2rem;
+            margin-left: 4rem;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 2rem;
+        }
+
+        :host .title {
+            text-transform: uppercase;
+            font-size: 35px;
+            margin: 1rem;
+        }
+
+        
+        :host .description {
+          margin: 0.5rem;
+          width: 50%;
+         }
+
+         :host .button {
+          margin: 1rem;
+          width:100px;
+          background-color: rgb(71, 114, 35);
+          border-color: transparent;
+          border: 1px solid rgba(56, 90, 28, 0.3);
+          border-radius: 100px;
+          color: white;
+          padding: 0.5rem;
+          filter: drop-shadow(0.3rem 0.3rem 0.3rem rgba(0,0,0, 0.4));
+          font-family: Verdana, Geneva, Tahoma, sans-serif;
+          background: linear-gradient(160deg, rgb(71, 114, 35) 0%, rgb(37, 60, 18) 70%, rgb(37, 60, 18) 100%);
+          margin-bottom: 1rem;
+         }
+
+         :host .icon-wrapper {
+          display: flex;
+          margin-bottom: 2rem;
+          padding-left: 0.5rem;
+         }
+
+        :host .icon {
+          list-style: none;
+          display: flex;
+          align-items: center;
+          margin: 0.5rem;
+          gap: 0.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          background-color: rgba(255, 255, 255, 0.6);
+          background: linear-gradient(160deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.3) 100%);
+          border-radius: 15px;
+          padding: 0rem 0.6rem;
+        }
+
+        :host .logo {
+          order: 2;
+          width: 20px;
+          filter: invert(50%);
+          margin: 0.3rem;
+        }
+
+        :host .icon-text {
+          color: rgb(95, 108, 89);
+          font-weight: 700; 
+          margin: 0; 
+          font-size: 0.6rem; 
+          text-transform: capitalize;   
+        }`;
+      }
+
+      if (this.section === "care") {
+        return ` :host .careContent {
+          display: flex;
+          flex-wrap: wrap;
+          min-height: max-content;
+          padding-bottom: 3rem;
+        }
+
+        :host .text-wrapper {
+            width: 100%;
+            height: 100%;
+            margin: 0.2rem;
+            margin-left: 4rem;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 1rem;
+        }
+
+        :host .title {
+            text-transform: capitalize;
+            font-weight: 600;
+            font-size: 22px;
+            margin: 0.5rem 1rem ;
+        }
+
+        
+        :host .description {
+          margin: 0.5rem;
+          width: 50%;
+         }
+
+         :host .button {
+          margin: 1rem;
+          width:100px;
+          background-color: rgb(71, 114, 35);
+          border-color: transparent;
+          border: 1px solid rgba(56, 90, 28, 0.3);
+          border-radius: 100px;
+          color: white;
+          padding: 0.5rem;
+          filter: drop-shadow(0.3rem 0.3rem 0.3rem rgba(0,0,0, 0.4));
+          font-family: Verdana, Geneva, Tahoma, sans-serif;
+          background: linear-gradient(160deg, rgb(71, 114, 35) 0%, rgb(37, 60, 18) 70%, rgb(37, 60, 18) 100%);
+          margin-bottom: 1rem;
+         }
+
+         :host .icon-wrapper {
+          display: flex;
+          margin-bottom: 2rem;
+          padding-left: 0.5rem;
+         }
+
+        :host .icon {
+          list-style: none;
+          display: flex;
+          align-items: center;
+          margin: 0.5rem;
+          gap: 0.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          background-color: rgba(255, 255, 255, 0.6);
+          background: linear-gradient(160deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.3) 100%);
+          border-radius: 15px;
+          padding: 0rem 0.6rem;
+        }
+
+        :host .logo {
+          order: 2;
+          width: 20px;
+          filter: invert(50%);
+          margin: 0.3rem;
+        }
+
+        :host .icon-text {
+          color: rgb(95, 108, 89);
+          font-weight: 700; 
+          margin: 0; 
+          font-size: 0.6rem; 
+          text-transform: capitalize;   
+        }`;
+      }
+    };
     return `
         <style>
             :host {
@@ -162,83 +355,8 @@ class myElement extends HTMLElement {
               gap: 3rem;
             }
             
-            :host .mainContent {
-              display: flex;
-              justify-content: space-between;
-              position: relative;
-              min-height: max-content;
-            }
-
-            :host .text-wrapper {
-                width: 100%;
-                height: 100%;
-                margin: 0.2rem;
-                margin-left: 4rem;
-                display: flex;
-                flex-direction: column;
-                padding-bottom: 2rem;
-            }
-
-            :host .title {
-                text-transform: uppercase;
-                font-size: 35px;
-                margin: 1rem;
-            }
-
-            
-            :host .description {
-              margin: 0.5rem;
-              width: 50%;
-             }
-
-             :host .button {
-              margin: 1rem;
-              width:100px;
-              background-color: rgb(71, 114, 35);
-              border-color: transparent;
-              border: 1px solid rgba(56, 90, 28, 0.3);
-              border-radius: 100px;
-              color: white;
-              padding: 0.5rem;
-              filter: drop-shadow(0.3rem 0.3rem 0.3rem rgba(0,0,0, 0.4));
-              font-family: Verdana, Geneva, Tahoma, sans-serif;
-              background: linear-gradient(160deg, rgb(71, 114, 35) 0%, rgb(37, 60, 18) 70%, rgb(37, 60, 18) 100%);
-              margin-bottom: 1rem;
-             }
-
-             :host .icon-wrapper {
-              display: flex;
-              margin-bottom: 2rem;
-              padding-left: 0.5rem;
-             }
-
-            :host .icon {
-              list-style: none;
-              display: flex;
-              align-items: center;
-              margin: 0.5rem;
-              gap: 0.5rem;
-              border: 1px solid rgba(255, 255, 255, 0.6);
-              background-color: rgba(255, 255, 255, 0.6);
-              background: linear-gradient(160deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.3) 100%);
-              border-radius: 15px;
-              padding: 0rem 0.6rem;
-            }
-
-            :host .logo {
-              order: 2;
-              width: 20px;
-              filter: invert(50%);
-              margin: 0.3rem;
-            }
-
-            :host .icon-text {
-              color: rgb(95, 108, 89);
-              font-weight: 700; 
-              margin: 0; 
-              font-size: 0.6rem; 
-              text-transform: capitalize;   
-          }
+            ${getSectionStyles()}
+           
 
             :host .image {
                 width: 400px;
