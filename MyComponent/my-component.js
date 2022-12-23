@@ -90,7 +90,7 @@ class myElement extends HTMLElement {
          <div class="text-wrapper">
              <h1 class="title">${this.name}</h1>
              <p class="description" >${this.description}</p>
-             <button class="button" > Add </button>
+             <button class="button"> Add </button>
  
              <ul class="icon-wrapper">
                  ${icon.join("")}
@@ -182,7 +182,6 @@ class myElement extends HTMLElement {
          :host .button {
           margin: 1rem;
           width:100px;
-          background-color: rgb(71, 114, 35);
           border-color: transparent;
           border: 1px solid rgba(56, 90, 28, 0.3);
           border-radius: 100px;
@@ -192,6 +191,12 @@ class myElement extends HTMLElement {
           font-family: Verdana, Geneva, Tahoma, sans-serif;
           background: linear-gradient(160deg, rgb(71, 114, 35) 0%, rgb(37, 60, 18) 70%, rgb(37, 60, 18) 100%);
           margin-bottom: 1rem;
+         }
+
+         :host .button-inactive {
+            background: linear-gradient(160deg, rgb(152, 152, 152) 0%, rgb(120, 120, 120) 70%, rgb(100, 100, 100) 100%);
+            border: 1px solid  rgba(100, 100, 100, 0.8);
+           
          }
 
          :host .icon-wrapper {
@@ -310,6 +315,7 @@ class myElement extends HTMLElement {
         }`;
       }
     };
+
     return `
         <style>
             :host {
@@ -376,6 +382,23 @@ class myElement extends HTMLElement {
 
   render() {
     this.shadowRoot.appendChild(this.getTemplate().content.cloneNode(true));
+    this.addEvents();
+  }
+
+  addEvents() {
+    const button = this.shadowRoot.querySelector(".button");
+
+    button
+      ? button.addEventListener("click", () => {
+          button.classList.toggle("button-inactive");
+
+          console.log(button.classList.contains("button-inactive"));
+
+          button.classList.contains("button-inactive")
+            ? (button.innerHTML = "Added")
+            : (button.innerHTML = "Add");
+        })
+      : null;
   }
 
   connectedCallback() {
